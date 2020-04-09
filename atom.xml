@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://huxinmin.github.io</id>
     <title>胡新敏的个人博客</title>
-    <updated>2020-04-09T00:54:17.683Z</updated>
+    <updated>2020-04-09T01:04:56.060Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://huxinmin.github.io"/>
     <link rel="self" href="https://huxinmin.github.io/atom.xml"/>
@@ -10,6 +10,77 @@
     <logo>https://huxinmin.github.io/images/avatar.png</logo>
     <icon>https://huxinmin.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 胡新敏的个人博客</rights>
+    <entry>
+        <title type="html"><![CDATA[ JS实现继承的几种方式]]></title>
+        <id>https://huxinmin.github.io/post/js-shi-xian-ji-cheng-de-ji-chong-fang-shi/</id>
+        <link href="https://huxinmin.github.io/post/js-shi-xian-ji-cheng-de-ji-chong-fang-shi/">
+        </link>
+        <updated>2020-04-09T01:03:54.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1原型链继承">1：原型链继承</h2>
+<pre><code class="language-javascript">function parent(){}
+parent.prototype={}
+funcation child(){}
+//继承父类
+child.prototype = new parent();
+//现在用的更多的是 child.prototype= Object.create(parent.prototype);
+//注意:不能用child.peototype=parent.prototype,因为一旦修改子类的原型属性会污染父类的原型属性
+//重新指定子类的构造器，不然构造器会指向父类
+child.prototype.constructor = child;
+</code></pre>
+<h4 id="特点">特点：</h4>
+<ul>
+<li>实例是子类的实例，也是父类的实例</li>
+<li>父类新增原型方法/原型属性，子类都能访问到</li>
+</ul>
+<h4 id="缺点">缺点：</h4>
+<ul>
+<li>无法实现多继承，修改父类原型会影响子类，</li>
+<li>创建子类实例时，无法向父类构造函数传参</li>
+<li>由于重新new了一个parent，消耗内存</li>
+</ul>
+<h2 id="2构造继承">2：构造继承</h2>
+<pre><code class="language-javascript">function child(){
+    parent.call(this)
+}
+</code></pre>
+<h4 id="特点-2">特点：</h4>
+<ul>
+<li>创建子类实例时，可以向父类传递参数</li>
+<li>可以实现多继承（call多个父类对象）</li>
+</ul>
+<h4 id="缺点-2">缺点：</h4>
+<ul>
+<li>只能继承父类的实例属性和方法，不能继承原型属性/方法</li>
+<li>无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</li>
+</ul>
+<h2 id="3拷贝继承">3:拷贝继承</h2>
+<pre><code class="language-javascript">function child(){
+  var parent= new parent();
+  for(var p in parent){
+    child.prototype[p] = parent[p];
+  }
+}
+</code></pre>
+<h4 id="特点-3">特点：</h4>
+<ul>
+<li>支持多继承</li>
+</ul>
+<h3 id="缺点-3">缺点：</h3>
+<ul>
+<li>效率较低，内存占用高（因为要拷贝父类的属性）</li>
+<li>无法获取父类不可枚举的方法（不可枚举方法，不能使用for in 访问到）</li>
+</ul>
+<h2 id="4新建中间函数继承推荐">4:新建中间函数继承（推荐）</h2>
+<pre><code class="language-javascript">// 创建一个没有实例方法的类
+var Super = function(){};
+Super.prototype = parent.prototype;
+//将实例作为子类的原型
+child.prototype = new Super();
+child.prototype.constructor = child
+</code></pre>
+<p>该方法由于中间函数是空对象，所以几乎不占内存，性能较高</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://huxinmin.github.io/post/hello-gridea/</id>
