@@ -182,92 +182,171 @@
             </figure>
             <span class="fh5co-meta animate-box">
                 
-                    <div class="tag-container">
-                        
-                            <a href="https://huxinmin.github.io/tag/AzH6zVqFK/" class="tag">js, </a>
-                        
-                    </div>
-                
             </span>
-            <h2 class="fh5co-article-title animate-box"> JS实现继承的几种方式</h2>
+            <h2 class="fh5co-article-title animate-box">Fetch使用方法以及与传统Ajax对比</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
                 <li>2020-04-09</li>
-                <li>421字</li>
-                <li>2 min read</li>
+                <li>1100字</li>
+                <li>5 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
-                        <p> <h2 id="1原型链继承">1：原型链继承</h2>
-<pre><code class="language-javascript">function parent(){}
-parent.prototype={}
-funcation child(){}
-//继承父类
-child.prototype = new parent();
-//现在用的更多的是 child.prototype= Object.create(parent.prototype);
-//注意:不能用child.peototype=parent.prototype,因为一旦修改子类的原型属性会污染父类的原型属性
-//重新指定子类的构造器，不然构造器会指向父类
-child.prototype.constructor = child;
+                        <p> <h2 id="fetch简介">Fetch简介</h2>
+<p>Fetch API  提供了一个 JavaScript接口，用于访问和操纵HTTP管道的部分，例如请求和响应。它还提供了一个全局 <code>fetch()</code>方法，该方法提供了一种简单，合乎逻辑的方式来跨网络异步获取资源。</p>
+<p>这种功能以前是使用  XMLHttpRequest实现的。Fetch提供了一个更好的替代方法，可以很容易地被其他技术使用，例如 Service Workers。Fetch还提供了单个逻辑位置来定义其他HTTP相关概念，例如 CORS和HTTP的扩展。</p>
+<h2 id="fetch与ajax区别">Fetch与Ajax区别</h2>
+<ul>
+<li>当接收到一个代表错误的 HTTP 状态码时，从 fetch()返回的 Promise 不会被标记为 reject， 即使该 HTTP 响应的状态码是 404 或 500。相反，它会将 Promise 状态标记为 resolve （但是会将 resolve 的返回值的 ok 属性设置为 false ），  仅当网络故障时或请求被阻止时，才会标记为 reject。</li>
+<li>默认情况下, fetch 不会从服务端发送或接收任何 cookies, 如果站点依赖于用户 session，则会导致未经认证的请求（要发送 cookies，必须设置 credentials 选项）.<br>
+如果想要在同域中自动发送cookie,加上 credentials 的 same-origin 选项</li>
+</ul>
+<pre><code class="language-javascript">fetch(url, {
+  credentials: ’same-origin'
+})
 </code></pre>
-<h4 id="特点">特点：</h4>
-<ul>
-<li>实例是子类的实例，也是父类的实例</li>
-<li>父类新增原型方法/原型属性，子类都能访问到</li>
-</ul>
-<h4 id="缺点">缺点：</h4>
-<ul>
-<li>无法实现多继承，修改父类原型会影响子类，</li>
-<li>创建子类实例时，无法向父类构造函数传参</li>
-<li>由于重新new了一个parent，消耗内存</li>
-</ul>
-<h2 id="2构造继承">2：构造继承</h2>
-<pre><code class="language-javascript">function child(){
-    parent.call(this)
-}
+<p>same-origin值使得fetch处理Cookie与XMLHttpRequest类似。 否则，Cookie将不会被发送，导致这些请求不保留认证会话。<br>
+对于CORS请求，使用include值允许将凭据发送到其他域：</p>
+<pre><code class="language-javascript">fetch(url, {
+  credentials: 'include'
+})
 </code></pre>
-<h4 id="特点-2">特点：</h4>
-<ul>
-<li>创建子类实例时，可以向父类传递参数</li>
-<li>可以实现多继承（call多个父类对象）</li>
-</ul>
-<h4 id="缺点-2">缺点：</h4>
-<ul>
-<li>只能继承父类的实例属性和方法，不能继承原型属性/方法</li>
-<li>无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</li>
-</ul>
-<h2 id="3拷贝继承">3:拷贝继承</h2>
-<pre><code class="language-javascript">function child(){
-  var parent= new parent();
-  for(var p in parent){
-    child.prototype[p] = parent[p];
-  }
-}
+<h2 id="why-fetch">Why Fetch?</h2>
+<ol>
+<li>XMLHttpRequest 是一个设计粗糙的 API，不符合关注分离（Separation of Concerns）的原则，配置和调用方式非常混乱，而且基于事件的异步模型写起来也没有现代的 Promise，generator/yield，async/await 友好。</li>
+<li>对于传统的XMLHttpRequest而言，你必须使用它的一个实例来执行请求和检索返回的响应。 但是通过Fetch API，我们还能够明确的配置请求对象。</li>
+<li>同构方便，使用 <code>isomorphic-fetch</code><br>
+<code>注：同构(isomorphic/universal)就是使前后端运行同一套代码的意思，后端一般是指 NodeJS 环境。</code></li>
+</ol>
+<h2 id="fetch的缺陷">Fetch的缺陷</h2>
+<ol>
+<li>Fetch的支持性不好,下图为Fetch在各大平台的支持情况。<br>
+<img src="https://huxinmin.oss-cn-qingdao.aliyuncs.com/%E5%8D%9A%E5%AE%A2/Fetch%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/fetch.png"  alt="Fetch支持性情况"/></li>
+<li>使用XMLHttpRequest你可以模拟进度（监听progress事件），Fetch无法做到</li>
+<li>Fetch 和 Promise 一样，一旦发起，不能中断，也不会超时，只能等待被 resolve 或 reject。</li>
+</ol>
+<h2 id="语法说明">语法说明</h2>
+<pre><code class="language-javascript">fetch(url, options).then(function(response) {
+  // handle HTTP response
+}, function(error) {
+  // handle network error
+})
 </code></pre>
-<h4 id="特点-3">特点：</h4>
 <ul>
-<li>支持多继承</li>
-</ul>
-<h3 id="缺点-3">缺点：</h3>
+<li>
+<h4 id="url定义要获取的资源-这可能是">url:定义要获取的资源。这可能是：</h4>
 <ul>
-<li>效率较低，内存占用高（因为要拷贝父类的属性）</li>
-<li>无法获取父类不可枚举的方法（不可枚举方法，不能使用for in 访问到）</li>
+<li>一个 USVString 字符串，包含要获取资源的 URL。</li>
+<li>一个 Request 对象。</li>
 </ul>
-<h2 id="4新建中间函数继承推荐">4:新建中间函数继承（推荐）</h2>
-<pre><code class="language-javascript">// 创建一个没有实例方法的类
-var Super = function(){};
-Super.prototype = parent.prototype;
-//将实例作为子类的原型
-child.prototype = new Super();
-child.prototype.constructor = child
+</li>
+<li>
+<h4 id="options可选一个配置项对象包括所有对请求的设置-可选的参数有">options（可选）:一个配置项对象，包括所有对请求的设置。可选的参数有：</h4>
+<ul>
+<li>method: 请求使用的方法，如 GET、POST。</li>
+<li>headers: 请求的头信息，形式为 Headers 对象或 ByteString。</li>
+<li>body: 请求的 body 信息：可能是一个 Blob、BufferSource、FormData、URLSearchParams 或者 USVString 对象。注意 GET 或 HEAD 方法的请求不能包含 body 信息。</li>
+<li>mode: 请求的模式，如 cors、 no-cors 或者 same-origin。</li>
+<li>credentials: 请求的 credentials，如 omit、same-origin 或者 include。</li>
+<li>cache: 请求的 cache 模式: default, no-store, reload, no-cache, force-cache, 或者 only-if-cached。</li>
+</ul>
+</li>
+<li>
+<h4 id="response一个-promiseresolve-时回传-response-对象">response:一个 Promise，resolve 时回传 Response 对象：</h4>
+<ul>
+<li>
+<p>属性：</p>
+<ul>
+<li>status (number) - HTTP请求结果参数，在100–599 范围</li>
+<li>statusText (String) - 服务器返回的状态报告</li>
+<li>ok (boolean) - 如果返回200表示请求成功则为true</li>
+<li>headers (Headers) - 返回头部信息，下面详细介绍</li>
+<li>url (String) - 请求的地址</li>
+</ul>
+</li>
+<li>
+<p>方法：</p>
+<ul>
+<li><code>text()</code> - 以string的形式生成请求text</li>
+<li><code>json()</code> - 生成JSON.parse(responseText)的结果</li>
+<li><code>blob()</code> - 生成一个Blob</li>
+<li><code>arrayBuffer()</code> - 生成一个ArrayBuffer</li>
+<li><code>formData()</code> - 生成格式化的数据，可用于其他的请求</li>
+</ul>
+</li>
+<li>
+<p>其他方法：</p>
+<ul>
+<li><code>clone()</code></li>
+<li><code>Response.error()</code></li>
+<li><code>Response.redirect()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="responseheaders">response.headers</h4>
+<ul>
+<li><code>has(name)</code> (boolean) - 判断是否存在该信息头</li>
+<li><code>get(name)</code> (String) - 获取信息头的数据</li>
+<li><code>getAll(name)</code> (Array) - 获取所有头部数据</li>
+<li><code>set(name, value)</code> - 设置信息头的参数</li>
+<li><code>append(name, value)</code> - 添加header的内容</li>
+<li><code>delete(name)</code> - 删除header的信息</li>
+<li><code>forEach(function(value, name){ ... }, [thisContext])</code> - 循环读取header的信息</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用实例">使用实例</h2>
+<pre><code class="language-javascript">var myHeaders = new Headers();
+var myInit = { method: 'GET',
+               headers: myHeaders,
+               mode: 'cors',
+               cache: 'default' };
+fetch('flowers.jpg',myInit)
+.then(function(response) {
+  return response.blob();
+})
+.then(function(myBlob) {
+  var objectURL = URL.createObjectURL(myBlob);
+  myImage.src = objectURL;
+});
 </code></pre>
-<p>该方法由于中间函数是空对象，所以几乎不占内存，性能较高</p>
+<p>也可以自定义请求对象：</p>
+<pre><code class="language-javascript">var myHeaders = new Headers();
+var myInit = { method: 'GET',
+               headers: myHeaders,
+               mode: 'cors',
+               cache: 'default' };
+
+var myRequest = new Request('flowers.jpg', myInit);
+fetch(myRequest).then(function(response) {
+  return response.blob();
+}).then(function(myBlob) {
+  var objectURL = URL.createObjectURL(myBlob);
+  myImage.src = objectURL;
+});
+</code></pre>
+<h2 id="参考资料">参考资料</h2>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch" target="_blank" rel="nofollow">MDN 使用 Fetch</a><br>
+<a href="https://segmentfault.com/a/1190000007019545" target="_blank" rel="nofollow">SegmentFault Fetch用法说明</a><br>
+<a href="https://github.com/github/fetch" target="_blank" rel="nofollow">Github Fetch</a></p>
  </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="https://huxinmin.github.io/post/react-chang-jian-mian-shi-ti-fen-xi/">
+                                    <h3 class="post-title">
+                                        React常见面试题分析
+                                    </h3>
+                                </a>
+                            </div>
                         
                     </div>
                 </div>
@@ -301,28 +380,21 @@ child.prototype.constructor = child
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#1%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF">1：原型链继承</a><br>
+<li><a href="#fetch%E7%AE%80%E4%BB%8B">Fetch简介</a></li>
+<li><a href="#fetch%E4%B8%8Eajax%E5%8C%BA%E5%88%AB">Fetch与Ajax区别</a></li>
+<li><a href="#why-fetch">Why Fetch?</a></li>
+<li><a href="#fetch%E7%9A%84%E7%BC%BA%E9%99%B7">Fetch的缺陷</a></li>
+<li><a href="#%E8%AF%AD%E6%B3%95%E8%AF%B4%E6%98%8E">语法说明</a><br>
 *
 <ul>
-<li><a href="#%E7%89%B9%E7%82%B9">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9">缺点：</a></li>
+<li><a href="#url%E5%AE%9A%E4%B9%89%E8%A6%81%E8%8E%B7%E5%8F%96%E7%9A%84%E8%B5%84%E6%BA%90-%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF">url:定义要获取的资源。这可能是：</a></li>
+<li><a href="#options%E5%8F%AF%E9%80%89%E4%B8%80%E4%B8%AA%E9%85%8D%E7%BD%AE%E9%A1%B9%E5%AF%B9%E8%B1%A1%E5%8C%85%E6%8B%AC%E6%89%80%E6%9C%89%E5%AF%B9%E8%AF%B7%E6%B1%82%E7%9A%84%E8%AE%BE%E7%BD%AE-%E5%8F%AF%E9%80%89%E7%9A%84%E5%8F%82%E6%95%B0%E6%9C%89">options（可选）:一个配置项对象，包括所有对请求的设置。可选的参数有：</a></li>
+<li><a href="#response%E4%B8%80%E4%B8%AA-promiseresolve-%E6%97%B6%E5%9B%9E%E4%BC%A0-response-%E5%AF%B9%E8%B1%A1">response:一个 Promise，resolve 时回传 Response 对象：</a></li>
+<li><a href="#responseheaders">response.headers</a></li>
 </ul>
 </li>
-<li><a href="#2%E6%9E%84%E9%80%A0%E7%BB%A7%E6%89%BF">2：构造继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9-2">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9-2">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#3%E6%8B%B7%E8%B4%9D%E7%BB%A7%E6%89%BF">3:拷贝继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9-3">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9-3">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#4%E6%96%B0%E5%BB%BA%E4%B8%AD%E9%97%B4%E5%87%BD%E6%95%B0%E7%BB%A7%E6%89%BF%E6%8E%A8%E8%8D%90">4:新建中间函数继承（推荐）</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E5%AE%9E%E4%BE%8B">使用实例</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
 </ul>
 </li>
 </ul>

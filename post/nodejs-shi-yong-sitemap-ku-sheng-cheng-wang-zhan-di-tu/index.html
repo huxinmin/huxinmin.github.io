@@ -184,90 +184,161 @@
                 
                     <div class="tag-container">
                         
-                            <a href="https://huxinmin.github.io/tag/AzH6zVqFK/" class="tag">js, </a>
+                            <a href="https://huxinmin.github.io/tag/XRK7arMJO/" class="tag">nodejs, </a>
                         
                     </div>
                 
             </span>
-            <h2 class="fh5co-article-title animate-box"> JS实现继承的几种方式</h2>
+            <h2 class="fh5co-article-title animate-box">Nodejs使用sitemap库生成网站地图</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
                 <li>2020-04-09</li>
-                <li>421字</li>
-                <li>2 min read</li>
+                <li>575字</li>
+                <li>4 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
-                        <p> <h2 id="1原型链继承">1：原型链继承</h2>
-<pre><code class="language-javascript">function parent(){}
-parent.prototype={}
-funcation child(){}
-//继承父类
-child.prototype = new parent();
-//现在用的更多的是 child.prototype= Object.create(parent.prototype);
-//注意:不能用child.peototype=parent.prototype,因为一旦修改子类的原型属性会污染父类的原型属性
-//重新指定子类的构造器，不然构造器会指向父类
-child.prototype.constructor = child;
+                        <p> <h2 id="简介">简介</h2>
+<p>sitemap.js是一个高级的网站地图生成框架，可以轻松地创建站点地图XML文件。<br>
+github地址是<a href="https://github.com/ekalinin/sitemap.js">https://github.com/ekalinin/sitemap.js</a></p>
+<h2 id="安装">安装</h2>
+<p>推荐使用npm进行安装</p>
+<pre><code class="language-sh">npm install --save sitemap
 </code></pre>
-<h4 id="特点">特点：</h4>
-<ul>
-<li>实例是子类的实例，也是父类的实例</li>
-<li>父类新增原型方法/原型属性，子类都能访问到</li>
-</ul>
-<h4 id="缺点">缺点：</h4>
-<ul>
-<li>无法实现多继承，修改父类原型会影响子类，</li>
-<li>创建子类实例时，无法向父类构造函数传参</li>
-<li>由于重新new了一个parent，消耗内存</li>
-</ul>
-<h2 id="2构造继承">2：构造继承</h2>
-<pre><code class="language-javascript">function child(){
-    parent.call(this)
-}
+<h2 id="使用">使用</h2>
+<pre><code class="language-javascript">var sm = require('sitemap')
+// Creates a sitemap object given the input configuration with URLs 
+var sitemap = sm.createSitemap({ options });
+// Generates XML with a callback function 
+sitemap.toXML( function(err, xml){ if (!err){ console.log(xml) } });
+// Gives you a string containing the XML data 
+var xml = sitemap.toString();
+//options 包含三个基本参数
+hostname: 'http://example.com', //主机名
+cacheTime: 600000,  // 缓存时间
+urls: [         //要生成的网站地图的url
+        { url: '/page-1/',  changefreq: 'daily', priority: 0.3 },
+        { url: '/page-2/',  changefreq: 'monthly',  priority: 0.7 },
+        { url: '/page-3/' } // changefreq: 'weekly',  priority: 0.5 
+]
+//其他用法
+sitemap.toString() //将网站地图生成字符串形式
+sitemap.add({url: '/page-2/', changefreq: 'monthly', priority: 0.7}); //添加一个url
+sitemap.del({url: '/page-2/'}); //删除一个url
 </code></pre>
-<h4 id="特点-2">特点：</h4>
+<h2 id="例子">例子</h2>
 <ul>
-<li>创建子类实例时，可以向父类传递参数</li>
-<li>可以实现多继承（call多个父类对象）</li>
+<li>配合express使用</li>
 </ul>
-<h4 id="缺点-2">缺点：</h4>
-<ul>
-<li>只能继承父类的实例属性和方法，不能继承原型属性/方法</li>
-<li>无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</li>
-</ul>
-<h2 id="3拷贝继承">3:拷贝继承</h2>
-<pre><code class="language-javascript">function child(){
-  var parent= new parent();
-  for(var p in parent){
-    child.prototype[p] = parent[p];
-  }
-}
+<pre><code class="language-javascript">var express = require('express'), 
+sm = require('sitemap');
+var app = express(), 
+sitemap = sm.createSitemap ({
+      hostname: 'http://example.com',
+      cacheTime: 600000,        // 600 sec - cache purge period 
+      urls: [
+        { url: '/page-1/',  changefreq: 'daily', priority: 0.3 },
+        { url: '/page-2/',  changefreq: 'monthly',  priority: 0.7 },
+        { url: '/page-3/'},    // changefreq: 'weekly',  priority: 0.5 
+        { url: '/page-4/',   img: &quot;http://urlTest.com&quot; }
+      ]
+    });
+app.get('/sitemap.xml', function(req, res) {
+    sitemap.toXML( function (err, xml) {
+      if (err) {
+        return res.status(500).end();
+      }
+      res.header('Content-Type', 'application/xml');
+      res.send( xml );
+    });
+});
+app.listen(3000);
 </code></pre>
-<h4 id="特点-3">特点：</h4>
 <ul>
-<li>支持多继承</li>
+<li>在静态文件基础上提前生成sitemap</li>
 </ul>
-<h3 id="缺点-3">缺点：</h3>
-<ul>
-<li>效率较低，内存占用高（因为要拷贝父类的属性）</li>
-<li>无法获取父类不可枚举的方法（不可枚举方法，不能使用for in 访问到）</li>
-</ul>
-<h2 id="4新建中间函数继承推荐">4:新建中间函数继承（推荐）</h2>
-<pre><code class="language-javascript">// 创建一个没有实例方法的类
-var Super = function(){};
-Super.prototype = parent.prototype;
-//将实例作为子类的原型
-child.prototype = new Super();
-child.prototype.constructor = child
+<pre><code class="language-javascript">var sm = require('sitemap'), 
+fs = require('fs'); 
+var sitemap = sm.createSitemap({
+    hostname: 'http://www.mywebsite.com',
+    cacheTime: 600000,  //600 sec (10 min) cache purge period 
+    urls: [
+        { url: '/' , changefreq: 'weekly', priority: 0.8, lastmodrealtime: true, lastmodfile: 'app/assets/index.html' },
+        { url: '/page1', changefreq: 'weekly', priority: 0.8, lastmodrealtime: true, lastmodfile: 'app/assets/page1.html' },
+        { url: '/page2'    , changefreq: 'weekly', priority: 0.8, lastmodrealtime: true, lastmodfile: 'app/templates/page2.hbs' } /* useful to monitor template content files instead of generated static files */
+    ]
+});
+fs.writeFileSync(&quot;app/assets/sitemap.xml&quot;, sitemap.toString());
 </code></pre>
-<p>该方法由于中间函数是空对象，所以几乎不占内存，性能较高</p>
+<ul>
+<li>给图片加上标题</li>
+</ul>
+<pre><code class="language-javascript">var sitemap = sm.createSitemap({
+      urls: [{
+        url: 'http://test.com/page-1/',
+        img: [
+          {
+            url: 'http://test.com/img1.jpg',
+            caption: 'An image',
+            title: 'The Title of Image One',
+            geoLocation: 'London, United Kingdom',
+            license: 'https://creativecommons.org/licenses/by/4.0/'
+          },
+          {
+            url: 'http://test.com/img2.jpg',
+            caption: 'Another image',
+            title: 'The Title of Image Two',
+            geoLocation: 'London, United Kingdom',
+            license: 'https://creativecommons.org/licenses/by/4.0/'
+          }
+        ]
+      }]
+    });
+</code></pre>
+<ul>
+<li>视频</li>
+</ul>
+<pre><code class="language-javascript">var sitemap = sm.createSitemap({
+      urls: [{
+        url: 'http://test.com/page-1/',
+        video: [
+          { thumbnail_loc: 'http://test.com/tmbn1.jpg', title: 'A video title', description: 'This is a video' },
+          { thumbnail_loc: 'http://test.com/tmbn2.jpg', title: 'Another video title', description: 'This is another video' },
+        ]
+      }]
+    });
+</code></pre>
+<ul>
+<li>给动态网页添加进sitemap</li>
+</ul>
+<pre><code class="language-javascript">var sitemap = sm.createSitemap ({
+      hostname: 'http://example.com',
+      cacheTime: 600000
+    });
+sitemap.add({url: '/page-1/'});
+sitemap.add({url: '/page-2/', changefreq: 'monthly', priority: 0.7});
+sitemap.del({url: '/page-2/'});
+sitemap.del('/page-1/');
+</code></pre>
+<ul>
+<li>更多例子请参考<a href="https://www.npmjs.com/package/sitemap">https://www.npmjs.com/package/sitemap</a></li>
+</ul>
  </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="https://huxinmin.github.io/post/sublime-text3-an-zhuang-cha-jian-fang-fa/">
+                                    <h3 class="post-title">
+                                        Sublime Text3安装插件方法
+                                    </h3>
+                                </a>
+                            </div>
                         
                     </div>
                 </div>
@@ -301,28 +372,10 @@ child.prototype.constructor = child
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#1%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF">1：原型链继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#2%E6%9E%84%E9%80%A0%E7%BB%A7%E6%89%BF">2：构造继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9-2">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9-2">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#3%E6%8B%B7%E8%B4%9D%E7%BB%A7%E6%89%BF">3:拷贝继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9-3">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9-3">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#4%E6%96%B0%E5%BB%BA%E4%B8%AD%E9%97%B4%E5%87%BD%E6%95%B0%E7%BB%A7%E6%89%BF%E6%8E%A8%E8%8D%90">4:新建中间函数继承（推荐）</a></li>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85">安装</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8">使用</a></li>
+<li><a href="#%E4%BE%8B%E5%AD%90">例子</a></li>
 </ul>
 </li>
 </ul>

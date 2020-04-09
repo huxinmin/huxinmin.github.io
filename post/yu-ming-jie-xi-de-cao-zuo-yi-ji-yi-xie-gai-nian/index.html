@@ -182,92 +182,94 @@
             </figure>
             <span class="fh5co-meta animate-box">
                 
-                    <div class="tag-container">
-                        
-                            <a href="https://huxinmin.github.io/tag/AzH6zVqFK/" class="tag">js, </a>
-                        
-                    </div>
-                
             </span>
-            <h2 class="fh5co-article-title animate-box"> JS实现继承的几种方式</h2>
+            <h2 class="fh5co-article-title animate-box">域名解析的操作以及一些概念</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
                 <li>2020-04-09</li>
-                <li>421字</li>
-                <li>2 min read</li>
+                <li>1212字</li>
+                <li>5 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
-                        <p> <h2 id="1原型链继承">1：原型链继承</h2>
-<pre><code class="language-javascript">function parent(){}
-parent.prototype={}
-funcation child(){}
-//继承父类
-child.prototype = new parent();
-//现在用的更多的是 child.prototype= Object.create(parent.prototype);
-//注意:不能用child.peototype=parent.prototype,因为一旦修改子类的原型属性会污染父类的原型属性
-//重新指定子类的构造器，不然构造器会指向父类
-child.prototype.constructor = child;
-</code></pre>
-<h4 id="特点">特点：</h4>
+                        <p> <p>&lt;img src='http://static.huxinmin.com/%E5%8D%9A%E5%AE%A2/%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E7%9A%84%E6%93%8D%E4%BD%9C%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/1.png<br>
+', alt='阿里云域名解析控制台', style='width:100%'&gt;<br>
+在我们购买了域名以及服务器之后，要想成功访问该网站，接下来就要进行域名解析了。域名解析有如下几种：</p>
+<h2 id="1-a记录ip指向">1. A记录（IP指向）</h2>
+<p>又称IP指向，用户可以在此设置子域名并指向到自己的目标主机地址上，从而实现通过域名找到服务器找到相应网页的功能。</p>
+<blockquote>
+<p>说明：</p>
+</blockquote>
 <ul>
-<li>实例是子类的实例，也是父类的实例</li>
-<li>父类新增原型方法/原型属性，子类都能访问到</li>
+<li>指向的目标主机地址类型只能使用IP地址，一般用于解析到自己的服务器上的公网IP地址。</li>
 </ul>
-<h4 id="缺点">缺点：</h4>
+<h2 id="2-cname别名指向">2. CNAME（别名指向）</h2>
+<p>通常称别名指向。您可以为一个主机设置别名。相当于用子域名来代替ip地址，优点是如果ip地址变化，只需要改动子域名的解析，而不需要逐一改变ip地址解析。</p>
+<blockquote>
+<p>说明：</p>
+</blockquote>
 <ul>
-<li>无法实现多继承，修改父类原型会影响子类，</li>
-<li>创建子类实例时，无法向父类构造函数传参</li>
-<li>由于重新new了一个parent，消耗内存</li>
+<li>CNAME的目标主机地址只能使用主机名，不能使用IP地址；</li>
+<li>主机名前不能有任何其他前缀，如：http://等是不被允许的；</li>
+<li>A记录优先于CNAME记录。即如果一个主机地址同时存在A记录和CNAME记录，则CNAME记录不生效。</li>
 </ul>
-<h2 id="2构造继承">2：构造继承</h2>
-<pre><code class="language-javascript">function child(){
-    parent.call(this)
-}
-</code></pre>
-<h4 id="特点-2">特点：</h4>
+<h2 id="3-mx记录">3. MX记录</h2>
+<p>邮件交换记录。用于将以该域名为结尾的电子邮件指向对应的邮件服务器以进行处理。如：用户所用的邮件是以域名mydomain.com为结尾的，则需要在管理界面中添加该域名的MX记录来处理所有以@mydomain.com结尾的邮件。</p>
+<blockquote>
+<p>说明：</p>
+</blockquote>
 <ul>
-<li>创建子类实例时，可以向父类传递参数</li>
-<li>可以实现多继承（call多个父类对象）</li>
+<li>MX记录可以使用主机名或IP地址；</li>
+<li>MX记录可以通过设置优先级实现主辅服务器设置，&quot;优先级&quot;中的数字越小表示级别越高。也可以使用相同优先级达到负载均衡的目的；</li>
+<li>如果在&quot;主机名&quot;中填入子域名则此MX记录只对该子域名生效。</li>
 </ul>
-<h4 id="缺点-2">缺点：</h4>
+<h2 id="4-ns记录name-server">4. NS记录（Name Server）</h2>
+<p>是域名服务器记录。用来表明由哪台服务器对该域名进行解析。您注册域名时，总有默认的DNS服务器，每个注册的域名都是由一个DNS域名服务器来进行解析的，DNS服务器NS记录地址一般以以下的形式出现：ns1.domain.comns2.domain.com</p>
+<blockquote>
+<p>说明：</p>
+</blockquote>
 <ul>
-<li>只能继承父类的实例属性和方法，不能继承原型属性/方法</li>
-<li>无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</li>
+<li>&quot;优先级&quot;中的数字越小表示级别越高；</li>
+<li>&quot;IP地址/主机名&quot;中既可以填写IP地址，也可以填写像ns.mydomain.com这样的主机地址，但必须保证该主机地址有效。如，将 news.mydomain.com的NS记录指向到ns.mydomain.com，在设置NS记录的同时还需要设置ns.mydomain.com的 指向，否则NS记录将无法正常解析；<br>
+= NS记录优先于A记录。即，如果一个主机地址同时存在NS记录和A记录，则A记录不生效。这里的NS记录只对子域名生效。</li>
 </ul>
-<h2 id="3拷贝继承">3:拷贝继承</h2>
-<pre><code class="language-javascript">function child(){
-  var parent= new parent();
-  for(var p in parent){
-    child.prototype[p] = parent[p];
-  }
-}
-</code></pre>
-<h4 id="特点-3">特点：</h4>
+<h2 id="4什么时候用a记录什么时候用cname别名解析">4.什么时候用A记录，什么时候用CNAME别名解析</h2>
+<p>经常换IP，建议用CNAME别名解析，不经常换IP，建议用A记录直接解析到IP。<br>
+多线空间，必须用CNAME别名解析。</p>
+<blockquote>
+<p>注：</p>
+</blockquote>
+<p>据说百度比较喜欢作A记录IP指向的网站，如果你的顶级域名用的是A记录，带www的二级域名用CNAME别名解析，那么，百度会以为这是两个站，而不是一个站。也就是说，A记录便于百度SEO优化。不过这个还有待验证。<br>
+说白了，就是A直接指向，CNAME间接指向</p>
+<h2 id="5-如何设置二级域名">5. 如何设置二级域名</h2>
 <ul>
-<li>支持多继承</li>
+<li>使用cname进行二级域名解析，如blog.baidu.com,解析名称为blog,记录值为@<br>
+这样的话，blog.baidu.com指向的还是A所指向的IP地址，当然CNAME可以指向其他的别名，如xxx.domain.xxxxxx这种形式的,</li>
+<li>使用A进行二级域名解析，如blog.baidu.com.解析名称为blog,值为IP地址<br>
+这样blog.baidu.com就指向了我们所选择的IP。当然，你也可以填写上面的IP。但是既然上面设置别名的话，用CNAME间接指向，解析时间会比A快（即生效时间）</li>
 </ul>
-<h3 id="缺点-3">缺点：</h3>
+<h2 id="6-符号概念">6. 符号概念</h2>
 <ul>
-<li>效率较低，内存占用高（因为要拷贝父类的属性）</li>
-<li>无法获取父类不可枚举的方法（不可枚举方法，不能使用for in 访问到）</li>
+<li>www 是指域名前带 www的，以百度为例，就是 www.baidu.com</li>
+<li>@ 是指前面不带任何主机名的，以百度为例，就是 baidu.com</li>
+<li>* 是指泛解析，是指除已添加的解析记录以外的所有主机都以此为准，以百度为例，就是 12343.baidu.com  但解析的时候并没有针对 12343。</li>
 </ul>
-<h2 id="4新建中间函数继承推荐">4:新建中间函数继承（推荐）</h2>
-<pre><code class="language-javascript">// 创建一个没有实例方法的类
-var Super = function(){};
-Super.prototype = parent.prototype;
-//将实例作为子类的原型
-child.prototype = new Super();
-child.prototype.constructor = child
-</code></pre>
-<p>该方法由于中间函数是空对象，所以几乎不占内存，性能较高</p>
  </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="https://huxinmin.github.io/post/shi-yong-linqjs-xiang-cao-zuo-shu-ju-ku-yi-yang-de-cao-zuo-json/">
+                                    <h3 class="post-title">
+                                        使用Linqjs像操作数据库一样的操作Json
+                                    </h3>
+                                </a>
+                            </div>
                         
                     </div>
                 </div>
@@ -301,28 +303,13 @@ child.prototype.constructor = child
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#1%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF">1：原型链继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#2%E6%9E%84%E9%80%A0%E7%BB%A7%E6%89%BF">2：构造继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9-2">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9-2">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#3%E6%8B%B7%E8%B4%9D%E7%BB%A7%E6%89%BF">3:拷贝继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9-3">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9-3">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#4%E6%96%B0%E5%BB%BA%E4%B8%AD%E9%97%B4%E5%87%BD%E6%95%B0%E7%BB%A7%E6%89%BF%E6%8E%A8%E8%8D%90">4:新建中间函数继承（推荐）</a></li>
+<li><a href="#1-a%E8%AE%B0%E5%BD%95ip%E6%8C%87%E5%90%91">1. A记录（IP指向）</a></li>
+<li><a href="#2-cname%E5%88%AB%E5%90%8D%E6%8C%87%E5%90%91">2. CNAME（别名指向）</a></li>
+<li><a href="#3-mx%E8%AE%B0%E5%BD%95">3. MX记录</a></li>
+<li><a href="#4-ns%E8%AE%B0%E5%BD%95name-server">4. NS记录（Name Server）</a></li>
+<li><a href="#4%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8a%E8%AE%B0%E5%BD%95%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8cname%E5%88%AB%E5%90%8D%E8%A7%A3%E6%9E%90">4.什么时候用A记录，什么时候用CNAME别名解析</a></li>
+<li><a href="#5-%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D">5. 如何设置二级域名</a></li>
+<li><a href="#6-%E7%AC%A6%E5%8F%B7%E6%A6%82%E5%BF%B5">6. 符号概念</a></li>
 </ul>
 </li>
 </ul>

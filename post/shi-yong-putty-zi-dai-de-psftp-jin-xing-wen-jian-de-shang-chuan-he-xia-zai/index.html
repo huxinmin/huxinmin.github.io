@@ -184,90 +184,130 @@
                 
                     <div class="tag-container">
                         
-                            <a href="https://huxinmin.github.io/tag/AzH6zVqFK/" class="tag">js, </a>
+                            <a href="https://huxinmin.github.io/tag/JqHVZntTk/" class="tag">putty, </a>
                         
                     </div>
                 
             </span>
-            <h2 class="fh5co-article-title animate-box"> JS实现继承的几种方式</h2>
+            <h2 class="fh5co-article-title animate-box">使用Putty自带的psftp进行文件的上传和下载</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
                 <li>2020-04-09</li>
-                <li>421字</li>
-                <li>2 min read</li>
+                <li>1007字</li>
+                <li>5 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
-                        <p> <h2 id="1原型链继承">1：原型链继承</h2>
-<pre><code class="language-javascript">function parent(){}
-parent.prototype={}
-funcation child(){}
-//继承父类
-child.prototype = new parent();
-//现在用的更多的是 child.prototype= Object.create(parent.prototype);
-//注意:不能用child.peototype=parent.prototype,因为一旦修改子类的原型属性会污染父类的原型属性
-//重新指定子类的构造器，不然构造器会指向父类
-child.prototype.constructor = child;
+                        <p> <h3 id="1-安装putty">1. 安装putty</h3>
+<p>去putty的官网找到并下载putty的安装文件，官网地址：<a href="http://www.putty.org/">http://www.putty.org/</a><br>
+不过好像官网被墙了进不去，也可以去这两个地址进行下载：</p>
+<ul>
+<li><a href="https://www.ssh.com/ssh/putty/download">https://www.ssh.com/ssh/putty/download</a></li>
+<li><a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/">https://www.chiark.greenend.org.uk/~sgtatham/putty/</a></li>
+</ul>
+<h3 id="2-工具介绍">2. 工具介绍</h3>
+<p>putty自带了2个文件传输工具：</p>
+<ul>
+<li>PSCP (PuTTY Secure Copy client)</li>
+<li>PSFTP (PuTTY SFTP client)</li>
+</ul>
+<p>它们之间的区别在于：PSCP 通过 SSH 连接，在两台机器之间安全的传输文件，可以用于任何 SSH（包括 SSH v1、SSH v2） 服务器。PSFTP 则是 SSH-2 中新增的特性，使用的是新的 SFTP 协议，使用上与传统的 FTP 类似。事实上 PSCP 如果发现 SFTP 可用，PSCP就会使用 SFTP 协议来传输文件，否则还是 SCP 协议。PSFTP 与 PSCP 相比，PSFTP 的优点是可以与服务器进行交互，遍历服务器上的文件系统，在一个会话中上传或下载多个文件。而 PSCP 只能一次传输一个文件，传输完毕后立刻终止会话。</p>
+<h3 id="3-开始使用">3. 开始使用</h3>
+<p>本文主要介绍psftp的使用方法：</p>
+<ol>
+<li>进到putty的安装目录，找到psftp.exe的执行文件，点击运行</li>
+<li>然后根据提示输入</li>
+</ol>
+<pre><code class="language-sh"> open [username@]&lt;sessname|hostname|ip&gt; [port]
+login as root
+password ******
 </code></pre>
-<h4 id="特点">特点：</h4>
-<ul>
-<li>实例是子类的实例，也是父类的实例</li>
-<li>父类新增原型方法/原型属性，子类都能访问到</li>
-</ul>
-<h4 id="缺点">缺点：</h4>
-<ul>
-<li>无法实现多继承，修改父类原型会影响子类，</li>
-<li>创建子类实例时，无法向父类构造函数传参</li>
-<li>由于重新new了一个parent，消耗内存</li>
-</ul>
-<h2 id="2构造继承">2：构造继承</h2>
-<pre><code class="language-javascript">function child(){
-    parent.call(this)
-}
+<ol start="3">
+<li>登录成功以后，就可以使用psftp进行文件的上传下载了</li>
+</ol>
+<pre><code class="language-sh">//例如使用put命令进行上传
+put xxxxx
+//若是上传文件夹的话，，记得要加上 -r,递归符号
+put -r xxxx
 </code></pre>
-<h4 id="特点-2">特点：</h4>
+<h3 id="4-参数详解">4. 参数详解</h3>
 <ul>
-<li>创建子类实例时，可以向父类传递参数</li>
-<li>可以实现多继承（call多个父类对象）</li>
-</ul>
-<h4 id="缺点-2">缺点：</h4>
+<li>通配符
 <ul>
-<li>只能继承父类的实例属性和方法，不能继承原型属性/方法</li>
-<li>无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</li>
+<li>* 代替任何字串</li>
+<li>? 替代一个字母</li>
+<li>[abc] 在a b c范围内替代一个字母</li>
+<li>[a-z] 在a到z范围内替代一个字母</li>
+<li>[^abc] 替代一个字母，不包括a b c</li>
+<li>[-a] 代表连接号（-）</li>
+<li>[a^] 代表脱字符号（^）</li>
+<li>/ 放在上面的所有通配符之前，以取消其（通配符）涵义</li>
 </ul>
-<h2 id="3拷贝继承">3:拷贝继承</h2>
-<pre><code class="language-javascript">function child(){
-  var parent= new parent();
-  for(var p in parent){
-    child.prototype[p] = parent[p];
-  }
-}
-</code></pre>
-<h4 id="特点-3">特点：</h4>
+</li>
+<li>open, quit, close, help命令<br>
+从名字就可以知道它们的作用了。其中quit是关闭PSFTP（bey和exit与quit相同），close是切断连接但不关闭PSFTP。</li>
+<li>cd, pwd, lcd, lpwd命令<br>
+你已经知道cd和pwd是干什么的了，它们在远程服务器上工作。lcd和lpwd是在cd和pwd前加了Local，就是本地机器的改变路径和显示路径。也可以用!cd, !pwd来实现lcd, lpwd。</li>
+<li>get, put命令
 <ul>
-<li>支持多继承</li>
+<li>get [-r] &lt;filename|directory&gt; 从服务器下载一个文件/目录，这个命令不能用通配符，参数 -r 可以递归下载整个目录</li>
+<li>put [-r] &lt;filename|directory&gt; [dest] 把文件/目录上传到服务器，这个命令不能用通配符，参数 -r 可以递归上传整个目录</li>
 </ul>
-<h3 id="缺点-3">缺点：</h3>
+</li>
+<li>mget, mput, reget，reput命令</li>
+<li>mget [-r] &lt;filename|directory&gt; 从服务器下载一批文件/目录，可以用通配符，-r 的含义与 get 一样</li>
+<li>mput [-r] &lt;filename|directory&gt; [dest] 把一批文件/目录上传到服务器，可以用通配符，-r 的含义与 put 一样</li>
+<li>reget [-r] &lt;filename|directory&gt; 从服务器续传下载一个文件/目录，这个命令不能用通配符，-r 的含义与 get 一样</li>
+<li>reput [-r] &lt;filename|directory&gt; [dest] 把一批文件/目录续传上传到服务器，这个命令不能用通配符，-r 的含义与 put 一样</li>
+<li>dir, del, mkdir rmdir命令
 <ul>
-<li>效率较低，内存占用高（因为要拷贝父类的属性）</li>
-<li>无法获取父类不可枚举的方法（不可枚举方法，不能使用for in 访问到）</li>
+<li>dir [directory] 列目录</li>
+<li>ls 和 dir 一样</li>
+<li>mkdir 创建目录</li>
+<li>rmdir 删除目录</li>
 </ul>
-<h2 id="4新建中间函数继承推荐">4:新建中间函数继承（推荐）</h2>
-<pre><code class="language-javascript">// 创建一个没有实例方法的类
-var Super = function(){};
-Super.prototype = parent.prototype;
-//将实例作为子类的原型
-child.prototype = new Super();
-child.prototype.constructor = child
-</code></pre>
-<p>该方法由于中间函数是空对象，所以几乎不占内存，性能较高</p>
+</li>
+<li>chmod [file|directory] 改变文件的权限，与 Unix 的 chmod 命令类似<br>
+其参数u, g, o, a, +, -, r, w, x涵义分别是:
+<ul>
+<li>u (the owning user)文档所有者</li>
+<li>g (members of the owning group)组成员</li>
+<li>o (everybody else - ‘others’)其它所有人</li>
+<li>a (‘all’, everyone)所有人</li>
+<li>
+<ul>
+<li>加上（授予）</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>减去（剥夺）</li>
+</ul>
+</li>
+<li>r (permission to read the file)读</li>
+<li>w (permission to write to the file)写</li>
+<li>x (permission to execute the file）运行</li>
+</ul>
+</li>
+<li>mv &lt;source-file|source-directory&gt; &lt;dest-file|dest-directory&gt; 改名/移动。如果源和目的都是文件或目录，则是改名。如果目的是目录的话，则是移动。</li>
+<li>! 在本地命令前加一个感叹号，就可以直接执行</li>
+</ul>
  </p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="https://huxinmin.github.io/post/nodejs-shi-yong-xls-to-json-mo-kuai-jiang-excel-shu-ju-du-chu-cun-qu-wei-json-ge-shi/">
+                                    <h3 class="post-title">
+                                        Nodejs使用xls-to-json模块将excel数据读出存取为json格式
+                                    </h3>
+                                </a>
+                            </div>
                         
                     </div>
                 </div>
@@ -301,28 +341,14 @@ child.prototype.constructor = child
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#1%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF">1：原型链继承</a><br>
-*
+<li>
 <ul>
-<li><a href="#%E7%89%B9%E7%82%B9">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9">缺点：</a></li>
+<li><a href="#1-%E5%AE%89%E8%A3%85putty">1. 安装putty</a></li>
+<li><a href="#2-%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D">2. 工具介绍</a></li>
+<li><a href="#3-%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8">3. 开始使用</a></li>
+<li><a href="#4-%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3">4. 参数详解</a></li>
 </ul>
 </li>
-<li><a href="#2%E6%9E%84%E9%80%A0%E7%BB%A7%E6%89%BF">2：构造继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9-2">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9-2">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#3%E6%8B%B7%E8%B4%9D%E7%BB%A7%E6%89%BF">3:拷贝继承</a><br>
-*
-<ul>
-<li><a href="#%E7%89%B9%E7%82%B9-3">特点：</a></li>
-<li><a href="#%E7%BC%BA%E7%82%B9-3">缺点：</a></li>
-</ul>
-</li>
-<li><a href="#4%E6%96%B0%E5%BB%BA%E4%B8%AD%E9%97%B4%E5%87%BD%E6%95%B0%E7%BB%A7%E6%89%BF%E6%8E%A8%E8%8D%90">4:新建中间函数继承（推荐）</a></li>
 </ul>
 </li>
 </ul>
