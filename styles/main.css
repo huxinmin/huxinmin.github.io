@@ -12746,3 +12746,5 @@ html[xmlns] .flexslider .slides {
         background: #f1f1f1;
       }
     
+      .img-box img{width:300px;height:auto;}
+    
