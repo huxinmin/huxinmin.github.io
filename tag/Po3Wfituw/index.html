@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <title>胡新敏的个人博客</title>
@@ -35,7 +35,7 @@
 
 </head>
 <body>
-    <div id="fh5co-offcanvas">
+<div id="fh5co-offcanvas">
     <a href="#!" class="fh5co-close-offcanvas js-fh5co-close-offcanvas">
         <span><i class="icon-cross3"></i> <span>Close</span></span>
     </a>
@@ -335,183 +335,55 @@
 </header>
 
 
-    <!--  <a href="#" class="fh5co-post-prev"><span>👈 Prev</span></a>-->
-    <!--  <a href="#" class="fh5co-post-next"><span>Next 👉</span></a>-->
+<div class="container-fluid">
 
-    <!-- 等gridea出自定义页面功能再优化一下 -->
+  <div class="col-lg-12 col-md-12 text-center tag-title">
+      <i class="fa fa-tag"></i> 标签: <h3>Gridea</h3>
+  </div>
+
+  <div class="row fh5co-post-entry">
+
     
-        <div class="container-fluid">
-    <div class="row fh5co-post-entry single-entry">
-        <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
-            <figure class="animate-box">
-                
-                    <img src="/post-images/zai-linux-xi-tong-xia-shi-yong-certbot-quan-zi-dong-wei-nginx-jin-xing-https-an-zhuang-zheng-shu-bing-pei-zhi.png" alt="在linux系统下使用certbot全自动为nginx进行https安装证书并配置" class="img-responsive">
-                
-            </figure>
-            <span class="fh5co-meta animate-box">
-                
-                    <div class="tag-container">
-                        
-                            <a href="https://huxinmin.github.io/tag/OJtK_Dsle/" class="tag">certbot, </a>
-                        
-                            <a href="https://huxinmin.github.io/tag/IFH5mQ48qH/" class="tag">https, </a>
-                        
-                            <a href="https://huxinmin.github.io/tag/mSeB0wbbH/" class="tag">linux, </a>
-                        
-                    </div>
-                
-            </span>
-            <h2 class="fh5co-article-title animate-box">在linux系统下使用certbot全自动为nginx进行https安装证书并配置</h2>
-            <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
-                <li>2020-04-09</li>
-                <li>1399字</li>
-                <li>6 min read</li>
-            </ol>
-
-            <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
-                <div class="row">
-                    <div class="col-md-12 animate-box post-content">
-                        <p> <h2 id="前言">前言</h2>
-<ol>
-<li>
-<h4 id="http-和-https-是什么">http 和 https 是什么？</h4>
-</li>
-</ol>
-<p>超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。 它是一个URI scheme（抽象标识符体系），句法类同http:体系。用于安全的HTTP数据传输。</p>
-<ol start="2">
-<li>
-<h4 id="ssltls-是什么">SSL/TLS 是什么？</h4>
-</li>
-</ol>
-<p>SSL协议位于TCP/IP协议与各种应用层协议之间，为数据通讯提供安全支持。SSL协议可分为两层： SSL记录协议（SSL Record Protocol）：它建立在可靠的传输协议（如TCP）之上，为高层协议提供数据封装、压缩、加密等基本功能的支持。 SSL握手协议（SSL Handshake Protocol）：它建立在SSL记录协议之上，用于在实际的数据传输开始前，通讯双方进行身份认证、协商加密算法、交换加密密钥等。TLS：安全传输层协议 （TLS：Transport Layer Security Protocol）安全传输层协议（TLS）用于在两个通信应用程序之间提供保密性和数据完整性。该协议由两层组成： TLS 记录协议（TLS Record）和 TLS 握手协议（TLS Handshake）。较低的层为 TLS 记录协议，位于某个可靠的传输协议（例如 TCP）上面.“ HTTP over SSL/TLS ”字面意思就是带“安全套接层”的 http 协议。其中 SSL 是“ Secure Sockets Layer ” 的缩写，是“安全套接层”的意思。 TLS 是 “Transport Layer Security” 的缩写，是 ” 传输层安全协议 ” 的意思。</p>
-<ol start="3">
-<li>
-<h4 id="为什么要部署-https">为什么要部署 https？</h4>
-</li>
-</ol>
-<p>说到底，就是 https 更安全。甚至为了安全，一个专业可靠的网站， https 是必须的。 Firefox 和 Chrome 都计划将没有配置 SSL 加密的 http 网站标记为不安全（貌似 Firefox 50 已经这么干了），目前它们也正在联合其他相关的基金会与公司推动整个互联网 https 化，现在大家访问的一些主要的网站。如 Google 多年前就已经全部启用 https ，国内的淘宝、搜狗、知乎、百度等等也全面 https 了。甚至 Google 的搜索结果也正在给予 https 的网站更高的排名和优先收录权。</p>
-<ol start="4">
-<li>
-<h4 id="怎么部署-https-呢">怎么部署 https 呢？</h4>
-</li>
-</ol>
-<p>你只需要有一张被信任的 CA （ Certificate Authority ）也就是证书授权中心颁发的 SSL 安全证书，并且将它部署到你的网站服务器上。一旦部署成功后，当用户访问你的网站时，浏览器会在显示的网址前加一把小绿锁，表明这个网站是安全的，当然同时你也会看到网址前的前缀变成了 https ，不再是 http 了。</p>
-<ol start="5">
-<li>
-<h4 id="怎么获得-ssl-安全证书呢">怎么获得 SSL 安全证书呢？</h4>
-</li>
-</ol>
-<p>理论上，我们自己也可以签发 SSL 安全证书，但是我们自己签发的安全证书不会被主流的浏览器信任，所以我们需要被信任的证书授权中心（ CA ）签发的安全证书。而一般的 SSL 安全证书签发服务都比较贵，比如 Godaddy 、 GlobalSign 等机构签发的证书一般都需要20美金一年甚至更贵，不过为了加快推广 https 的普及， EEF 电子前哨基金会、 Mozilla 基金会和美国密歇根大学成立了一个公益组织叫 ISRG （ Internet Security Research Group ），这个组织从 2015 年开始推出了 Let’s Encrypt 免费证书。这个免费证书不仅免费，而且还相当好用，所以我们就可以利用 Let’s Encrypt 提供的免费证书部署 https 了。那么怎么获得 Let’s Encrypt 安全证书，并且将它部署在自己的网站服务器上呢？</p>
-<h2 id="lets-encrypt-及-certbot-简介">Let’s Encrypt 及 Certbot 简介</h2>
-<p>Let's Encrypt作为一个公共且免费SSL的项目逐渐被广大用户传播和使用，是由Mozilla、Cisco、Akamai、IdenTrust、EFF等组织人员发起，主要的目的也是为了推进网站从HTTP向HTTPS过度的进程，目前已经有越来越多的商家加入和赞助支持。而certbot则是官方发布的工具。</p>
-<h2 id="certbot使用教程">certbot使用教程</h2>
-<ul>
-<li>登录官网<a href="https://certbot.eff.org">https://certbot.eff.org</a>，根据你的服务器和操作系统进行选择合适的版本，然后下面有两个选项，一个是automated(自动版)和advanced(高级版),本篇文章使用的是自动版。下载：</li>
-</ul>
-<pre><code class="language-sh">wget https://dl.eff.org/certbot-auto
-chmod a+x certbot-auto
-</code></pre>
-<ul>
-<li>对nginx进行配置</li>
-</ul>
-<pre><code class="language-sh">sudo ./path/to/certbot-auto --nginx
-</code></pre>
-<p><code>注意：如果你的nginx是通过源码编译安装的，要设置你的nginx配置文件的根目录，如下</code></p>
-<pre><code class="language-sh">sudo certbot-auto --nginx --nginx-server-root /usr/local/nginx/conf
-</code></pre>
-<ul>
-<li>设置自动更新，因为证书只有90天的有效期</li>
-</ul>
-<pre><code class="language-sh">#测试
- sudo ./path/to/certbot-auto renew --dry-run
-#如果测试成功，则可以把更新加入计划任务或者系统任务中
-#我们就使用crontab -e的命令来启用自动任务，命令行：
-sudo crontab -e
-#添加配置：
-SHELL=/bin/bash
-PATH=/sbin:/bin:/usr/sbin:/usr/bin 
-## 上面两行主要是设置环境变量 
-##
-30 2 * * 1 ./path/to/certbot-auto renew  &gt;&gt; /var/log/le-renew.log
-#上面的执行时间为：每周一半夜2点30分执行renew任务。你可以在命令行执行./path/to/certbot-auto renew &gt;&gt; /var/log/le-renew.log看看是否执行正常，如果一切OK，那么我们的配置到此结束！
-</code></pre>
-<ul>
-<li>更多资料可以参考<a href="https://certbot.eff.org/docs/using.html#renewal">https://certbot.eff.org/docs/using.html#renewal</a></li>
-</ul>
- </p>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 animate-box">
-                        
-                            <div class="next-post">
-                                <div class="next">下一篇</div>
-                                <a href="https://huxinmin.github.io/post/zai-linux-shang-an-zhuang-cheng-gong-de-nginx-bu-fu-gai-di-tian-jia-http_ssl_module-mo-kuai/">
-                                    <h3 class="post-title">
-                                        在Linux上安装成功的nginx不覆盖地添加http_ssl_module模块
-                                    </h3>
-                                </a>
-                            </div>
-                        
-                    </div>
-                </div>
-
-                <div class="row">
-    <div class="col-md-12 animate-box">
-        
-    </div>
-</div>
-
+      <article class="col-lg-3 col-md-3 col-sm-3 col-xs-12 col-xxs-12 animate-box article-box" style="height: 25em;">
+        <figure class="img-box">
+          <a href="https://huxinmin.github.io/post/hello-gridea/">
+            
+              <img data-original="https://huxinmin.github.io/post-images/hello-gridea.png" alt="Hello Gridea" class="img-responsive img-rounded lazy">
+            
+          </a>
+        </figure>
+        <span class="fh5co-meta">
+          
+            <div class="tag-container">
+              
+                <a href="https://huxinmin.github.io/tag/Po3Wfituw/" class="tag">Gridea, </a>
+              
             </div>
-
-        </article>
-    </div>
-</div>
-
+          
+        </span>
+        <h3 class="fh5co-article-title">
+          <a href="https://huxinmin.github.io/post/hello-gridea/">Hello Gridea</a>
+        </h3>
+        <span class="fh5co-meta fh5co-date">2018-12-12</span>
+      </article>
     
+    <div class="clearfix visible-lg-block visible-md-block visible-sm-block visible-xs-block"></div>
 
-    <!-- 返回顶部 -->
-    <div class="back-to-top">
+  </div>
+
+  <div class="pagination-box animate-box">
     
-        <a href="#!" id="tool-toc" class="hidden-xs hidden-sm">
-            <i class="fa fa-map"></i>
-        </a>
-        <br>
     
-    <a href="#top" class="hidden-xs hidden-sm"><i class="fa fa-paper-plane"></i></a>
-</div>
-
-<div class="post-toc animated fadeInRight hidden-xs hidden-sm" style="display: none;">
-    <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li><a href="#%E5%89%8D%E8%A8%80">前言</a><br>
-*
-<ul>
-<li><a href="#http-%E5%92%8C-https-%E6%98%AF%E4%BB%80%E4%B9%88">http 和 https 是什么？</a></li>
-<li><a href="#ssltls-%E6%98%AF%E4%BB%80%E4%B9%88">SSL/TLS 是什么？</a></li>
-<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%83%A8%E7%BD%B2-https">为什么要部署 https？</a></li>
-<li><a href="#%E6%80%8E%E4%B9%88%E9%83%A8%E7%BD%B2-https-%E5%91%A2">怎么部署 https 呢？</a></li>
-<li><a href="#%E6%80%8E%E4%B9%88%E8%8E%B7%E5%BE%97-ssl-%E5%AE%89%E5%85%A8%E8%AF%81%E4%B9%A6%E5%91%A2">怎么获得 SSL 安全证书呢？</a></li>
-</ul>
-</li>
-<li><a href="#lets-encrypt-%E5%8F%8A-certbot-%E7%AE%80%E4%BB%8B">Let’s Encrypt 及 Certbot 简介</a></li>
-<li><a href="#certbot%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B">certbot使用教程</a></li>
-</ul>
-</li>
-</ul>
-
+  </div>
 </div>
 
 
-    
 <footer id="fh5co-footer">
   <p>Powered by <a href="https://huxinmin.github.io" target="_blank">胡新敏的个人博客</a></p>
 </footer>
 
 
-    <!-- jQuery -->
+<!-- jQuery -->
 <script src="https://huxinmin.github.io/media/scripts/jquery.min.js"></script>
 <!-- img lazy load -->
 <script src="https://huxinmin.github.io/media/scripts/jquery.lazyload.min.js"></script>
